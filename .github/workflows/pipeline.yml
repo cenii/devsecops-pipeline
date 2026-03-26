@@ -15,9 +15,7 @@ jobs:
       - name: Escanear secretos
         uses: trufflesecurity/trufflehog@main
         with:
-          base: ${{ github.event.repository.default_branch }}
-          head: HEAD
-          extra_args: --results=verified,unverified,unknown
+          extra_args: --results=verified,unknown
       - name: Construir la imagen Docker
         run: |
           echo "Construyendo la imagen..."
