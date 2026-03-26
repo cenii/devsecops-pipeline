@@ -12,11 +12,16 @@ jobs:
       - name: Descargar el código
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Necesario para que TruffleHog pueda ver el historial completo
+          fetch-depth: 0
       - name: Escanear secretos
         uses: trufflesecurity/trufflehog@main
         with:
           extra_args: --results=verified,unverified,unknown
+      # --- SEGUNDO FILTRO DE SEGURIDAD ---
+      - name: Escanear vulnerabilidades de código
+        uses: semgrep/semgrep-action@v3
+        with:
+          config: "p/default" # Carga las reglas de seguridad por defecto
       - name: Construir la imagen Docker
         run: |
           echo "Construyendo la imagen..."
