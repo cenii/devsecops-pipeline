@@ -11,7 +11,11 @@ jobs:
     steps:
       - name: Descargar el código
         uses: actions/checkout@v4
-
+        # --- NUEVO FILTRO DE SEGURIDAD ---
+      - name: Escanear secretos
+        uses: trufflesecurity/trufflehog-actions@main
+        with:
+          extra_args: --only-verified=false
       - name: Construir la imagen Docker
         run: |
           echo "Construyendo la imagen..."
