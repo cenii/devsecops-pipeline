@@ -11,7 +11,8 @@ jobs:
     steps:
       - name: Descargar el código
         uses: actions/checkout@v4
-        # --- NUEVO FILTRO DE SEGURIDAD ---
+        with:
+          fetch-depth: 0 # Necesario para que TruffleHog pueda ver el historial completo
       - name: Escanear secretos
         uses: trufflesecurity/trufflehog@main
         with:
