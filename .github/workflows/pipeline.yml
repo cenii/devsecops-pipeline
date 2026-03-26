@@ -19,9 +19,9 @@ jobs:
           extra_args: --results=verified,unverified,unknown
       # --- SEGUNDO FILTRO DE SEGURIDAD ---
       - name: Escanear vulnerabilidades de código
-        uses: semgrep/semgrep-action@v3
-        with:
-          config: "p/default" # Carga las reglas de seguridad por defecto
+        run: |
+          pipx install semgrep
+          semgrep scan --config "p/default" --error
       - name: Construir la imagen Docker
         run: |
           echo "Construyendo la imagen..."
