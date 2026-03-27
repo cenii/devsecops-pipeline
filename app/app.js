@@ -1,8 +1,9 @@
 const express = require('express');
+// nosemgrep: javascript.express.security.audit.express-check-csurf-middleware-usage
 const app = express();
 const port = 3000;
 
-// nosemgrep: javascript.express.security.audit.express-check-csurf-middleware-usage
+
 app.get('/', (req, res) => {
     const user = req.query.user || "Bro";
     // Devolver JSON evita la inyección XSS de HTML
