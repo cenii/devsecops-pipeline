@@ -13,6 +13,30 @@ La pipeline automatiza las siguientes fases de validación ante cada nuevo `push
 3. **Container Build:** Construcción optimizada de la imagen Docker aplicando el principio de mínimos privilegios (Non-root user).
 4. **SCA & Container Security:** Escaneo de dependencias (paquetes npm) y vulnerabilidades a nivel del sistema operativo (CVEs de la imagen base).
 
+```mermaid
+graph TD
+    A[🧑‍💻 Developer] -->|git push| B(📦 GitHub Repository)
+    B -->|Triggers| C{⚡ GitHub Actions}
+    
+    subgraph DevSecOps Pipeline
+        C --> D[1. Checkout Code <br/> fetch-depth: 0]
+        D --> E[2. TruffleHog <br/> Secret Scanning]
+        E -->|Pass| F[3. Semgrep <br/> SAST Analysis]
+        E -.->|Secrets Found| Z((❌ Blocked))
+        F -->|Pass| G[4. Docker Build <br/> Non-root User]
+        F -.->|Vulns Found| Z
+        G --> H[5. Trivy <br/> SCA & OS Scan]
+        H -->|Pass| I((✅ Success <br/> Ready to Deploy))
+        H -.->|CVEs Found| Z
+    end
+
+    classDef default fill:#f9f9f9,stroke:#333,stroke-width:2px;
+    classDef blocked fill:#ffcccc,stroke:#ff0000,stroke-width:2px;
+    classDef success fill:#ccffcc,stroke:#00aa00,stroke-width:2px;
+    class Z blocked;
+    class I success;
+```
+ 
 ## 🛠️ Stack Tecnológico y Herramientas de Seguridad
 
 * **Aplicación:** Node.js, Express
