@@ -1,15 +1,20 @@
 const express = require('express');
-// nosemgrep: javascript.express.security.audit.express-check-csurf-middleware-usage
+const cookieParser = require('cookie-parser');
+const csrf = require('csurf');
+
 const app = express();
 const port = 3000;
 
+const csrfProtection = csrf({ cookie: true });
+app.use(cookieParser());
 
-app.get('/', (req, res) => {
+app.get('/', csrfProtection, (req, res) => {
     const user = req.query.user || "Bro";
-    // Devolver JSON evita la inyección XSS de HTML
+
     res.json({
         mensaje: `Qué pasa, ${user}!`,
-        info: "Esta es la app de prueba para DevSecOps segura."
+        info: "Esta es la app de prueba para DevSecOps 100% segura.",
+        csrfToken: req.csrfToken()
     });
 });
 
